@@ -1,0 +1,5 @@
+/vendor/*
+autoload.php
+/test/*
+/tests/*
+credentials.json

@@ -160,4 +160,19 @@ class Response
             throw new Exception($e->getMessage());
         }
     }
+
+    public static function BniDirect($response)
+    {
+        try {
+            $resObject = json_decode($response->getBody());
+            if (!str_starts_with($response->getStatusCode(), 200)) {
+                throw new Exception(
+                    json_encode($resObject)
+                );
+            }
+            return $resObject;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 }

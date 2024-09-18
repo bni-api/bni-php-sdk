@@ -209,8 +209,6 @@ class OneGatePayment
         return Response::oneGatePayment($response, 'getInterbankPaymentResponse');
     }
 
-    /* 2 services commented as requested from WDC */
-
     // public function holdAmount(
     //     string $customerReferenceNumber,
     //     int $amount,
