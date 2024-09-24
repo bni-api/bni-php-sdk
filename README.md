@@ -10,12 +10,12 @@ Please visit [Digital Services](https://digitalservices.bni.co.id/en/) for more 
 [download](https://getcomposer.org/download/) Composer and run command line
 
 ```
-composer require bni-api/bni-php-client
+composer require bni-api/bni-php
 ```
 
 ### 1.2 Manual Installation
 
-If you are not using Composer, you can clone or [download](https://github.com/bni-api/bni-php/archive/refs/heads/main.zip) this repository.
+If you are not using Composer, you can clone or [download](https://github.com/bni-api/bni-php-sdk/archive/refs/heads/main.zip) this repository.
 
 ## 2. Usage
 
@@ -765,7 +765,243 @@ $paymentUsingInterbank = $rdf->paymentUsingInterbank(
 )
 ```
 
-### 2.2.D RDN Service
+### 2.2.E RDF Service
+
+Create `RDF` Class Object
+
+```php
+use BniApi\BniPhp\Bni;
+use BniApi\BniPhp\api\RDF;
+
+$bni = new Bni(
+  $env = 'sandbox', // dev, sandbox, prod
+  $clientId = '{your-client-id}',
+  $clientSecret = '{your-client-secret}',
+  $apiKey = '{your-api-key}',
+  $apiSecret = '{your-api-secret}',
+  $appName = '{your-app-name}'
+);
+$rdn = new RDF(
+  $bni = '{instance-of-bni-class}',
+  $privateKeyPath = '{your-path-private-key}',
+  $channelId = '{your-channel}'
+);
+```
+
+#### Face Recognition
+
+```php
+$faceRecognition = $rdn->faceRecognition(
+  $companyId = 'SANDBOX',
+  $parentCompanyId = 'STI_CHS',
+  $firstName = 'MOHAMMAD',
+  $middleName = 'BAQER',
+  $lastName = 'ZALQAD',
+  $idNumber = '0141111121260118', // Identity Number (KTP only)
+  $birthDate = '29-09-2021', // format : DD-MM-YYYY
+  $birthPlace = 'BANDUNG',
+  $gender = 'M', // “M” or “F”
+  $cityAddress = 'Bandung',
+  $stateProvAddress = 'Jawa Barat',
+  $addressCountry = 'ID', // e.g.: “ID”
+  $streetAddress1 = 'bandung',
+  $streetAddress2 = 'bandung',
+  $postCodeAddress = '40914',
+  $country = 'ID', // e.g.: “ID”
+  $selfiePhoto = '29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuP', // Base64 encoded selfie photo
+);
+```
+
+#### Register Investor
+
+```php
+$registerInvestor = $rdn->registerInvestor(
+  $companyId = 'SANDBOX',
+  $parentCompanyId = 'STI_CHS',
+  $uuidFaceRecog = '492F33851D634CFB', // RequestUuid successed value from Face Recognition API (KYC valid)
+  $title = '01',
+  $firstName = 'Agus',
+  $middleName = '',
+  $lastName = 'Saputra',
+  $optNPWP = '1', // “1” or “0” (Default “1”)
+  $NPWPNum = '001058893408123',
+  $nationality = 'ID', // e.g.: “ID”
+  $domicileCountry = 'ID', // e.g.: “ID”
+  $religion = '2',
+  $birthPlace = 'Semarang',
+  $birthDate = '14081982', // DDMMYYYY
+  $gender = 'M', // “M” or “F”
+  $isMarried = 'S',
+  $motherMaidenName = 'Dina Maryati',
+  $jobCode = '01',
+  $education = '07',
+  $idType = '01',
+  $idNumber = '4147016201959998', // Identity Number (KTP only)
+  $idIssuingCity = 'Jakarta Barat',
+  $idExpiryDate = '26102099', // ddMMyyyy
+  $addressStreet = 'Jalan Mawar Melati',
+  $addressRtRwPerum = '003009Sentosa',
+  $addressKel = 'Cengkareng Barat',
+  $addressKec = 'Cengkareng/Jakarta Barat',
+  $zipCode = '11730',
+  $homePhone1 = '0214', // Area code, e.g. 021 (3 - 4 digit) If not exist, fill with “9999”
+  $homePhone2 = '7459', // Number after area code (min 4  digit) If not exist, fill with “99999999”
+  $officePhone1 = '', // Area code, e.g. 021
+  $officePhone2 = '', // Number after area code
+  $mobilePhone1 = '0812', // Operator code, e.g. 0812 (4 digit) If not exist, fill with “0899”
+  $mobilePhone2 = '12348331', // Number after operator code (min 6  digit) If not exist, fill with “999999”
+  $faxNum1 = '', // Area code, e.g. 021
+  $faxNum2 = '', // Number after area code
+  $email = 'agus.saputra@gmail.com',
+  $monthlyIncome = '8000000',
+  $branchOpening = '0259',
+  $institutionName = 'PT. BNI SECURITIES',
+  $sid = 'IDD280436215354',
+  $employerName = 'Salman', // Employer Name / Company Name
+  $employerAddDet = 'St Baker', // Employer street address / home street address
+  $employerAddCity = 'Arrandelle', // Employer city address / home city address
+  $jobDesc = 'Pedagang' // Current investor job,
+  $ownedBankAccNo = '0337109074', // Investor’s owned bank account
+  $idIssuingDate = '10122008' // Issue date, e.g.: “10122016”
+);
+```
+
+#### Register Investor's Account
+
+```php
+$registerInvestorAccount = $rdn->registerInvestorAccount(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $cifNumber = '9100749959',
+  $currency = 'IDR',
+  $openAccountReason = '2',
+  $sourceOfFund = '1',
+  $branchId = '0259',
+  $bnisId = '19050813401',
+  $sre = 'NI001CX5U00109',
+)
+```
+
+#### Inquiry Account Info
+
+```php
+$inquiryAccountInfo = $rdn->inquiryAccountInfo(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117'
+)
+```
+
+#### Inquiry Account Balance
+
+```php
+$inquiryAccountBalance = $rdn->inquiryAccountBalance(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117'
+)
+```
+
+#### Inquiry Account History
+
+```php
+$inquiryAccountHistory = $rdn->inquiryAccountHistory(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117'
+)
+```
+
+#### Payment Using Transfer
+```php
+$paymentUsingTransfer = $rdn->paymentUsingTransfer(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117',
+  $beneficiaryAccountNumber = '0115471119',
+  $currency = 'IDR', // e.g., “IDR”
+  $amount = 11500,
+  $remark = 'Test RDN' // Recommended for the reconciliation purpose
+)
+```
+
+#### Inquiry Payment Status
+
+```php
+$inquiryPaymentStatus = $rdn->inquiryPaymentStatus(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $requestedUuid = 'E8C6E0027F6E429F' // UUID that has been processed before
+
+)
+```
+
+#### Payment Using Clearing
+
+```php
+$paymentUsingClearing = $rdn->paymentUsingClearing(
+  $companyId = 'SANDBOX',
+  $parentCompanyId = 'STI_CHS',
+  $accountNumber = '0115476117',
+  $beneficiaryAccountNumber = '3333333333',
+  $beneficiaryAddress1 = 'Jakarta',
+  $beneficiaryAddress2 = '',
+  $beneficiaryBankCode = '140397',
+  $beneficiaryName = 'Panji Samudra',
+  $currency = 'IDR', // e.g., “IDR”
+  $amount = 15000,
+  $remark = 'Test kliring', // Recommended for the reconciliation purpose
+  $chargingType = 'OUR'
+)
+```
+
+#### Payment Using RTGS
+
+```php
+$paymentUsingRTGS = $rdn->paymentUsingRTGS(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117',
+  $beneficiaryAccountNumber = '3333333333',
+  $beneficiaryAddress1 = 'Jakarta',
+  $beneficiaryAddress2 = '',
+  $beneficiaryBankCode = 'CENAIDJA',
+  $beneficiaryName = 'Panji Samudra',
+  $currency = 'IDR', // e.g., “IDR”
+  $amount = 120000000,
+  $remark = 'Test rtgs', // Recommended for the reconciliation purpose
+  $chargingType = 'OUR'
+)
+```
+
+#### Inquiry Interbank Account
+
+```php
+$inquiryInterbankAccount = $rdn->inquiryInterbankAccount(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117',
+  $beneficiaryBankCode = '013',
+  $beneficiaryAccountNumber = '01300000',
+)
+```
+
+#### Payment Using Interbank
+
+```php
+$paymentUsingInterbank = $rdn->paymentUsingInterbank(
+  $companyId = 'NI001',
+  $parentCompanyId = 'KSEI',
+  $accountNumber = '0115476117',
+  $beneficiaryAccountNumber = '3333333333',
+  $beneficiaryAccountName = 'KEN AROK', // Get from Inquiry Interbank Account
+  $beneficiaryBankCode = '014',
+  $beneficiaryBankName = 'BANK BCA', // Get from Inquiry Interbank Account
+  $amount = 15000,
+)
+```
+
+### 2.2.F RDN Service
 
 Create `RDN` Class Object
 
@@ -1034,7 +1270,7 @@ $paymentUsingInterbank = $rdn->paymentUsingInterbank(
 )
 ```
 
-### 2.2.E P2P Lending Service (RDL)
+### 2.2.G P2P Lending Service (RDL)
 
 Create `RDL` Class Object
 
@@ -1271,7 +1507,7 @@ $paymentUsingInterbank = $rdl->paymentUsingInterbank(
 )
 ```
 
-### 2.2.F Digiloan BNI Move
+### 2.2.H Digiloan BNI Move
 
 Create `Bni Move` Class Object
 

@@ -1,5 +1,5 @@
 {
-    "name": "bni-api/bni-php-client",
+    "name": "bni-api/bni-php",
     "description": "Official BNI API SDK for PHP",
     "type": "library",
     "license": "MIT",
